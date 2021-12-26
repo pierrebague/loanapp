@@ -15,7 +15,7 @@ import os
 
 
 # features100 = "static/features100.csv"
-model = "static/lgb_classifier_model2_02_7.txt"
+model = "static/lgb_classifier_model2_02_7.pkl"
 # model = "static/model.lzma"
 explainer = "static/explainer.pkl"
 # shap_values = "static/shap_values.pkl"
