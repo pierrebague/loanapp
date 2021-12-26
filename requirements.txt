@@ -6,3 +6,4 @@ nodejs
 scipy
 shap
 matplotlib
+click<8.0
