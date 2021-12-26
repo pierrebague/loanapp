@@ -1,10 +1,7 @@
-from flask_socketio import SocketIO
 import sys
 print(sys.path)
 from flask import Flask, render_template, url_for, request
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = 'secret!'
-# socketio = SocketIO(app)
 
 
 from pandas import read_csv
