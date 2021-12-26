@@ -1,0 +1,8 @@
+numpy
+pandas
+flask
+lightgbm
+nodejs
+scipy
+shap
+gunicorn

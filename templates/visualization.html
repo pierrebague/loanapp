@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Visualization</h1>
+	<script>
+		function updateTextInput(val) {
+			  document.getElementById('textInput').value=val; 
+			}
+	</script>
+	<div class="row">
+		<div class="col-xl-12">
+			<div class="content-section">
+				<h3>Parameters choice</h3>
+				<p class='text-muted'>Existing preset.
+					<ul class="list-group">
+						<li class="list-group-item list-group-item-light">select user id 
+							
+							
+							
+							<form method="POST" action="show_loan_approbal">
+								<select name="user_id_value" >
+									{% for user in ids_user %}
+										<option value= "{{user}}" SELECTED>{{user}}</option>"
+									{% endfor %}
+								</select>
+								<input type="submit" value="show user loan">
+							</form>
+							
+							
+						</li>
+						
+					</ul>
+				</p>
+				<p class='text-muted'>Choose your parameters values.
+					<ul class="list-group">
+						<li class="list-group-item list-group-item-light"> Crédit
+							<form method="POST" action="calcul_pret">
+								<h6>Crédit</h6>
+								<input type="range" name="creditRange" min="20000" max="4100000" value="25000" oninput="this.form.creditInput.value=this.value" />
+								<input type="number" name="creditInput" min="20000" max="4100000" value="25000" oninput="this.form.creditRange.value=this.value" />
+								<h6>Annuité</h6>
+								<input type="range" name="annuiteRange" min="1000" max="500000" value="20000" oninput="this.form.annuiteInput.value=this.value" />
+								<input type="number" name="annuiteInput" min="1000" max="500000" value="20000" oninput="this.form.annuiteRange.value=this.value" />
+								<label for="annuité">Euros</label>
+								<h6>Sexe</h6>
+								<select name="sexe" >
+									<option value=0 SELECTED>Femme</option>
+									<option value=1 SELECTED>Homme</option>
+								</select>
+								<h6>Valeur du bien</h6>
+								<input type="range" name="goodsRange" min="500" max="5000000" value="15000" oninput="this.form.goodsInput.value=this.value" />
+								<input type="number" name="goodsInput" min="500" max="5000000" value="15000" oninput="this.form.goodsRange.value=this.value" />
+								<h6>Niveau scolaire</h6>
+								<select name="studies_degree" >
+									<option value= 0 SELECTED>secondaire</option>
+									<option value= 1 SELECTED>haute études</option>
+									<option value= 2 SELECTED>haute études incomplètes</option>
+									<option value= 3 SELECTED>inférieur secondaire</option>
+									<option value= 4 SELECTED>licence</option>
+								</select>
+								<h6>Catégorie métier</h6>
+								<select name="occupation_type" >
+									<option value= 0 SELECTED>ouvrier</option>
+									<option value= 5 SELECTED>commercial</option>
+									<option value= 1 SELECTED>personnel basique</option>
+									<option value= 3 SELECTED>manager</option>
+									<option value= 4 SELECTED>conducteur</option>
+									<option value= 11 SELECTED>haute technique</option>
+									<option value= 2 SELECTED>comptable</option>
+									<option value= 9 SELECTED>médical</option>
+									<option value= 10 SELECTED>sécurité</option>
+									<option value= 7 SELECTED>cuisine</option>
+									<option value= 6 SELECTED>nettoyage</option>
+									<option value= 8 SELECTED>service privé</option>
+									<option value= 13 SELECTED>ouvrier peu qualifié</option>
+									<option value= 12 SELECTED>serveur/barmen</option>
+									<option value= 15 SELECTED>secrétaire</option>
+									<option value= 14 SELECTED>immobilier</option>
+									<option value= 17 SELECTED>RH</option>
+									<option value= 16 SELECTED>informaticien</option>
+								</select>
+								<h6>Date d'embauche</h6>
+								<input type="date" name="job_start" min="1941-12-14" max="2021-12-14" value="2000-01-01" />
+								<h6>Revenu annuel</h6>
+								<input type="range" name="incomeRange" min="0" max="20000000" value="15000" oninput="this.form.incomeInput.value=this.value" />
+								<input type="number" name="incomeInput" min="0" max="20000000" value="15000" oninput="this.form.incomeRange.value=this.value" />
+								<h6>Date de naissance</h6>
+								<input type="date" name="daybirth" min="1941-12-14" max="2001-12-14" value="2000-01-01" />
+								<h6>Age voiture</h6>
+								-1 si aucune voiture
+								<input type="range" name="carRange" min="-1" max="100" value="-1" oninput="this.form.carInput.value=this.value" />
+								<input type="number" name="carInput" min="-1" max="100" value="-1" oninput="this.form.carRange.value=this.value" />
+								<h6>Situation familiale</h6>
+								<select name="family_status" >
+									<option value= 1 SELECTED>marié(e)</option>
+									<option value= 0 SELECTED>célibataire</option>
+									<option value= 2 SELECTED>mariage civil</option>
+									<option value= 4 SELECTED>séparé</option>
+									<option value= 3 SELECTED>veuf(ve)</option>
+									<option value= 5 SELECTED>autre</option>
+								</select>
+								<input type="submit" value="calcul">
+								
+							</form>
+						</li>
+
+					</ul>
+				</p>
+			</div>
+		</div>
+		
+	</div>
+{% endblock content %}
