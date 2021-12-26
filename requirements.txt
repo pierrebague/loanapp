@@ -5,3 +5,4 @@ lightgbm
 nodejs
 scipy
 shap
+matplotlib
