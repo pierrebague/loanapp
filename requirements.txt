@@ -8,4 +8,4 @@ scipy
 shap
 matplotlib
 click<8.0
-plotly=4.14.3
+plotly==4.14.3
