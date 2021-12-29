@@ -59,7 +59,7 @@ def main():
         })
     
     with st.sidebar:
-        st.write("## Menu intéractif")
+        st.write("# Menu intéractif")
         page = st.radio("Choississez vos paramètres et/ou regarder les résultats", tuple(pages.keys()))
         
         
