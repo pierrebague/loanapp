@@ -17,7 +17,7 @@ import streamlit.components.v1 as components
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-
+import datetime
 model = "static/lgb_classifier_model2_02_7.pkl"
 explainer = "static/explainer.pkl"
 shap_values = "static/shap_values_reduce.pkl"
@@ -74,17 +74,17 @@ def page_home():
         user_id_value = st.selectbox("Numéro d'utilisateur",list_ids,key="user_id_value")
     else :
         
-        creditInput = st.slider('Revenu annuel',20000,4100000,25000,500,key="creditInput")
+        creditInput = st.slider('Crédit demandé',20000,4100000,25000,500,key="creditInput")
         annuiteInput = st.slider('Annuité',1000,500000,20000,500,key="annuiteInput")
         sexe = st.selectbox('Sexe:', ['Femme', 'Homme'],key="sexe")
-        goodsInput = st.slider('Revenu annuel',500,5000000,15000,500,key="goodsInput")
+        goodsInput = st.slider('Prix du bien',500,5000000,15000,500,key="goodsInput")
         studies_degree = st.selectbox("Niveau scolaire:", ['Secondaire', 'Haute études','Haute études incomplètes','Inférieur secondaire', 'Licence'],key="studies_degree")
         occupation_type = st.selectbox("Catégorie métier:", ['ouvrier', 'personnel basique','comptable','manager', 'conducteur','commercial',
                                                              'nettoyage','cuisine','service privé','médical','sécurité','haute technique',
                                                              'serveur/barmen','ouvrier peu qualifié','immobilier','secrétaire','informaticien','RH'],key="occupation_type")
-        job_start = st.date_input("Date d'embauche",datetime.date(2021, 1, 1),key="job_start")
+        job_start = st.date_input("Date d'embauche",datetime.date(2021, 1, 1),min_value=datetime.date(1952, 1, 1),max_value=datetime.date.today(),key="job_start")
         incomeInput = st.slider('Revenu annuel',0,20000000,15000,500,key="incomeInput")
-        daybirth = st.date_input("Date de naissance",datetime.date(1980, 1, 1),key="daybirth")
+        daybirth = st.date_input("Date de naissance",datetime.date(1980, 1, 1),min_value=datetime.date(1922, 1, 1),max_value=datetime.date(2006, 1, 1),key="daybirth")
         st.write("### laisser à -1 si aucune voiture")
         carInput = st.slider('Age voiture',-1,100,-1,1,key="carInput")
         family_status = st.selectbox("Situation familiale:", ['marié(e)', 'célibataire','mariage civil','séparé', 'veuf(ve)', 'autre'],key="family_status")
