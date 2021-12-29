@@ -236,7 +236,10 @@ def page_results():
     
     
     st.write("### Position du prêt")
-    col_in_french = ["annuité","crédit","valeur bien à acheter","revenu annuel","ratio crédit/annuité","sexe","ratio crédit/valeur bien à acheter","statu familial","niveau d'études","catégorie métier","jours employé","ratio annuité/revenu annuel","age voiture","possède une voiture","ratio jours employé/naissance"]
+    col_in_french = ["annuité","crédit","valeur bien à acheter","revenu annuel","ratio crédit/annuité",
+                     "sexe","ratio crédit/valeur bien à acheter","statu familial","niveau d'études",
+                     "catégorie métier","jours employé","ratio annuité/revenu annuel","age","age voiture",
+                     "possède une voiture","ratio jours employé/naissance"]
     for ind,col in enumerate(importante_features):
         saved_graph= "static/" + str(col) + "_histogram.pkl"
         with open(saved_graph, 'rb') as handle:
