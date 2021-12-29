@@ -236,11 +236,13 @@ def page_results():
     
     
     st.write("### Position du prêt")
-    for col in importante_features:
+    col_in_french = ["annuité","crédit","valeur bien à acheter","revenu annuel","ratio crédit/annuité","sexe","ratio crédit/valeur bien à acheter","statu familial","niveau d'études","catégorie métier","jours employé","ratio annuité/revenu annuel","age voiture","possède une voiture","ratio jours employé/naissance"]
+    for ind,col in enumerate(importante_features):
         saved_graph= "static/" + str(col) + "_histogram.pkl"
         with open(saved_graph, 'rb') as handle:
             graph = pickle.load(handle)
         # print([pd_series_selected[col]])
+        st.write("#### Position du prêt pour : " + col_in_french[ind])
         st.plotly_chart(graph.add_trace(go.Scatter(y=[1],x=[pd_series_selected[col]])))
         handle.close()
         
