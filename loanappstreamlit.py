@@ -69,6 +69,7 @@ def page_home():
     # utilisateur_bool = "Non"
     utilisateur_bool = st.selectbox("Voulez vous visualiser un utilisateur préexistant?:", ['Oui', 'Non'],key="utilisateur_bool")
     if utilisateur_bool == "Oui":
+        st.write("### les 50 premiers sont défavorables au prêt, les 50 derniers sont favorables au prêt")
         list_ids = df['SK_ID_CURR'].values
         user_id_value = st.selectbox("Numéro d'utilisateur",list_ids,key="user_id_value")
     else :
