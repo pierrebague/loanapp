@@ -59,7 +59,7 @@ def main():
         })
     
     with st.sidebar:
-        page = st.radio("Choississez vos paramètres et/ou regarder les résultats", tuple(pages.keys()))
+        page = st.radio("##### Choississez vos paramètres et/ou regarder les résultats", tuple(pages.keys()))
 
     pages[page]()
 
@@ -67,27 +67,27 @@ def main():
 def page_home():
     st.write("## Choix d'un utilisateur préexistant ou non.")
     # utilisateur_bool = "Non"
-    utilisateur_bool = st.selectbox("Voulez vous visualiser un utilisateur préexistant?:", ['Oui', 'Non'],key="utilisateur_bool")
+    utilisateur_bool = st.selectbox("##### Voulez vous visualiser un utilisateur préexistant?:", ['Oui', 'Non'],key="utilisateur_bool")
     if utilisateur_bool == "Oui":
-        st.write("#### les 50 premiers sont défavorables au prêt, les 50 derniers sont favorables au prêt")
+        st.write("##### les 50 premiers sont défavorables au prêt, les 50 derniers sont favorables au prêt")
         list_ids = df['SK_ID_CURR'].values
-        user_id_value = st.selectbox("Numéro d'utilisateur",list_ids,key="user_id_value")
+        user_id_value = st.selectbox("##### Numéro d'utilisateur",list_ids,key="user_id_value")
     else :
         
-        creditInput = st.slider('Crédit demandé',20000,4100000,25000,500,key="creditInput")
-        annuiteInput = st.slider('Annuité',1000,500000,20000,500,key="annuiteInput")
-        sexe = st.selectbox('Sexe:', ['Femme', 'Homme'],key="sexe")
-        goodsInput = st.slider('Prix du bien',500,5000000,15000,500,key="goodsInput")
-        studies_degree = st.selectbox("Niveau scolaire:", ['Secondaire', 'Haute études','Haute études incomplètes','Inférieur secondaire', 'Licence'],key="studies_degree")
-        occupation_type = st.selectbox("Catégorie métier:", ['ouvrier', 'personnel basique','comptable','manager', 'conducteur','commercial',
+        creditInput = st.slider('##### Crédit demandé',20000,4100000,25000,500,key="creditInput")
+        annuiteInput = st.slider('##### Annuité',1000,500000,20000,500,key="annuiteInput")
+        sexe = st.selectbox('##### Sexe:', ['Femme', 'Homme'],key="sexe")
+        goodsInput = st.slider('##### Prix du bien',500,5000000,15000,500,key="goodsInput")
+        studies_degree = st.selectbox("##### Niveau scolaire:", ['Secondaire', 'Haute études','Haute études incomplètes','Inférieur secondaire', 'Licence'],key="studies_degree")
+        occupation_type = st.selectbox("##### Catégorie métier:", ['ouvrier', 'personnel basique','comptable','manager', 'conducteur','commercial',
                                                              'nettoyage','cuisine','service privé','médical','sécurité','haute technique',
                                                              'serveur/barmen','ouvrier peu qualifié','immobilier','secrétaire','informaticien','RH'],key="occupation_type")
-        job_start = st.date_input("Date d'embauche",datetime.date(2021, 1, 1),min_value=datetime.date(1952, 1, 1),max_value=datetime.date.today(),key="job_start")
-        incomeInput = st.slider('Revenu annuel',0,20000000,15000,500,key="incomeInput")
-        daybirth = st.date_input("Date de naissance",datetime.date(1980, 1, 1),min_value=datetime.date(1922, 1, 1),max_value=datetime.date(2006, 1, 1),key="daybirth")
-        st.write("### laisser à -1 si aucune voiture")
-        carInput = st.slider('Age voiture',-1,100,-1,1,key="carInput")
-        family_status = st.selectbox("Situation familiale:", ['marié(e)', 'célibataire','mariage civil','séparé', 'veuf(ve)', 'autre'],key="family_status")
+        job_start = st.date_input("##### Date d'embauche",datetime.date(2021, 1, 1),min_value=datetime.date(1952, 1, 1),max_value=datetime.date.today(),key="job_start")
+        incomeInput = st.slider('##### Revenu annuel',0,20000000,15000,500,key="incomeInput")
+        daybirth = st.date_input("##### Date de naissance",datetime.date(1980, 1, 1),min_value=datetime.date(1922, 1, 1),max_value=datetime.date(2006, 1, 1),key="daybirth")
+        st.write("#### laisser à -1 si aucune voiture")
+        carInput = st.slider('##### Age voiture',-1,100,-1,1,key="carInput")
+        family_status = st.selectbox("##### Situation familiale:", ['marié(e)', 'célibataire','mariage civil','séparé', 'veuf(ve)', 'autre'],key="family_status")
  
 
 
@@ -99,8 +99,8 @@ def page_results():
     if utilisateur_bool == "Oui":
         user_id_value = int(st.session_state.user_id_value)
         loan_accepted = model_loaded.predict(df[df['SK_ID_CURR']==user_id_value][features_for_pred].values[0].reshape(1,-1))[0] == 1
-        if loan_accepted != (df[df['SK_ID_CURR']==user_id_value]['TARGET'].values[0] == 1):
-            st.write("### contradiction prédiction réalité")
+        #if loan_accepted != (df[df['SK_ID_CURR']==user_id_value]['TARGET'].values[0] == 1):
+        #    st.write("### contradiction prédiction réalité")
         index = df[df['SK_ID_CURR']==user_id_value].index[0]
         shap_values_selected = shap_values_loaded[index]
         pd_series_selected = df.iloc[index][features_for_pred]
@@ -262,16 +262,6 @@ def calcul_duree_jour(in_date):
 def st_shap(plot, height=None):
     shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
     components.html(shap_html, height=height)
-    
-def density_plot(shap_value):
-    feature_names = shap_value.feature_names
-    shap_df = pd.DataFrame(shap_value.values, columns=feature_names)
-    vals = np.abs(shap_df.values).mean(0)
-    shap_importance = pd.DataFrame(list(zip(feature_names, vals)), columns=['col_name', 'feature_importance_vals'])
-    shap_importance.sort_values(by=['feature_importance_vals'], ascending=False, inplace=True)
-    # st.write(shap_importance.iloc[0:10])
-    for col in shap_importance.iloc[0:10]['col_name']:
-        st.plotly_chart(px.histogram(df,col))
     
 
 if __name__ == "__main__":
