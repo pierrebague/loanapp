@@ -1,8 +1,4 @@
 import streamlit as st
-# from flask import Flask, render_template, url_for, request
-# app = Flask(__name__)
-# app.config['SECRET_KEY'] = 'secret!'
-# socketio = SocketIO(app)
 
 
 from pandas import read_csv
@@ -71,7 +67,7 @@ def page_home():
     # utilisateur_bool = "Non"
     utilisateur_bool = st.selectbox("Voulez vous visualiser un utilisateur préexistant?:", ['Oui', 'Non'],key="utilisateur_bool")
     if utilisateur_bool == "Oui":
-        st.write("###### les 50 premiers sont défavorables au prêt, les 50 derniers sont favorables au prêt")
+        st.write("###### les 50 premiers sont favorables au prêt, les 50 derniers sont en défaut de payement")
         list_ids = df['SK_ID_CURR'].values
         user_id_value = st.selectbox("Numéro d'utilisateur",list_ids,key="user_id_value")
     else :
@@ -100,19 +96,13 @@ def page_results():
     utilisateur_bool = st.session_state.utilisateur_bool
     if utilisateur_bool == "Oui":
         user_id_value = int(st.session_state.user_id_value)
-        loan_accepted = model_loaded.predict(df[df['SK_ID_CURR']==user_id_value][features_for_pred].values[0].reshape(1,-1))[0] == 1
-        #if loan_accepted != (df[df['SK_ID_CURR']==user_id_value]['TARGET'].values[0] == 1):
+        not_payment_defaut = model_loaded.predict(df[df['SK_ID_CURR']==user_id_value][features_for_pred].values[0].reshape(1,-1))[0] == 0
+        #if not_payment_defaut != (df[df['SK_ID_CURR']==user_id_value]['TARGET'].values[0] == 1):
         #    st.write("### contradiction prédiction réalité")
         index = df[df['SK_ID_CURR']==user_id_value].index[0]
         shap_values_selected = shap_values_loaded[index]
         pd_series_selected = df.iloc[index][features_for_pred]
-        # shap_values_selected = shap_values_selected[:,:,1]
         
-        # fig = plt.subplot(211)
-        # st.set_option('deprecation.showPyplotGlobalUse', True)
-        
-        # shap.force_plot(shap_value_created[0])
-        # st.pyplot(bbox_inches='tight')
         
     else:
         creditInput = st.session_state.creditInput
@@ -224,22 +214,24 @@ def page_results():
         for key,value in new_values_columns.items():
             neutral_values[key] = value
             
-        loan_accepted = model_loaded.predict(neutral_values[features_for_pred].values[0].reshape(1,-1))[0] == 1
+        not_payment_defaut = model_loaded.predict(neutral_values[features_for_pred].values[0].reshape(1,-1))[0] == 0
         shap_value_created = explainer_loaded(neutral_values[features_for_pred])
         shap_value_created = shap_value_created[:,:,1]
         shap_values_selected = shap_value_created[0]
         pd_series_selected = neutral_values.iloc[0][features_for_pred]
         # print(pd_series_selected)
     
-    if loan_accepted:
+    if not_payment_defaut:
         st.write("## Prêt approuvé")
     else:
-        st.write("## Prêt désapprouvé")
+        st.write("## Risque de défaut de payement")
+    st.write("Une valeur au dessus de 0 indique un danger de défaut de payement")
+    st.write("Passez la souris sur le graphique pour voir les différentes variables impactants le résultat")
     st_shap(shap.force_plot(shap_values_selected), 200)
     
     
     st.write("### Position du prêt")
-    col_in_french = ["annuité","crédit","valeur bien à acheter","revenu annuel","ratio crédit/annuité",
+    col_in_french = ["annuité","crédit","valeur du bien à acheter","revenu annuel","ratio crédit/annuité",
                      "sexe","ratio crédit/valeur bien à acheter","statu familial","niveau d'études",
                      "catégorie métier","jours employé","ratio annuité/revenu annuel","age","age voiture",
                      "possède une voiture","ratio jours employé/naissance"]
@@ -252,7 +244,9 @@ def page_results():
         st.plotly_chart(graph.add_trace(go.Scatter(y=[1],x=[pd_series_selected[col]])))
         handle.close()
         
-    st.write("### Incidence des variables sur le model de décision")
+    st.write("### Incidence des variables sur le modèle de décision")
+    st.write("Les valeurs des variables sont définies par leurs couleurs. Bleu : la valeur de la variable est petite, rouge : la valeur de la variable est grande")
+    st.write("L'impact de la variable est définie par sa shap value, une shap value négative fait pencher la balance en faveur du prêt, une shap value positive fait pencher la balance en faveur d'un défaut de paiement")
     st.image(summary_plot)
 
 def calcul_duree_jour(in_date):
